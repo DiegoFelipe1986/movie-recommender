@@ -22,7 +22,7 @@ movie-recommender/
 
 1. Clona el repositorio:
 ```bash
-git clone https://gitlab.com/DiegoFelipe86/movie-recommender.git
+git clone https://github.com/DiegoFelipe1986/movie-recommender.git
 cd movie-recommender
 ```
 
