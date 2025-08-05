@@ -31,7 +31,7 @@ def test_recommendation_system():
     print(f"   • Total de películas: {stats['total_movies']:,}")
     print(f"   • Calificaciones totales: {stats['total_ratings']:,}")
     print(f"   • Calificación promedio: {stats['mean_rating']:.2f}")
-    print(f"   • Películas con calificaciones: {len(movies_df[movies_df['rating_count'] > 0]):,}")
+    print(f"   • Películas con calificaciones: {len(movies_df[movies_df.get('rating_count', 0) > 0]):,}")
     
     # Crear matriz de similitud
     print("\n🔍 Creando matriz de similitud...")
@@ -73,7 +73,7 @@ def test_recommendation_system():
         print("Top 5 películas más populares:")
         for idx, row in popular_movies.iterrows():
             year_str = f" ({row['year']})" if pd.notna(row['year']) else ""
-            print(f"   • {row['title']}{year_str} - ⭐ {row['avg_rating']:.1f} ({row['rating_count']} votos)")
+            print(f"   • {row['title']}{year_str} - ⭐ {row['avg_rating']:.1f} ({row.get('rating_count', 0)} votos)")
     
     # Probar géneros
     print("\n🎭 Probando búsqueda por géneros...")

@@ -257,7 +257,7 @@ if page_name == "Inicio":
                     </div>
                     <div style="text-align: right;">
                         <p style="color: #e74c3c; font-weight: bold; margin: 0;">⭐ {row['avg_rating']:.1f}</p>
-                        <p style="color: #95a5a6; font-size: 0.9rem; margin: 0;">({row['rating_count']} votos)</p>
+                        <p style="color: #95a5a6; font-size: 0.9rem; margin: 0;">({row.get('rating_count', 0)} votos)</p>
                     </div>
                 </div>
             </div>
@@ -431,7 +431,7 @@ elif page_name == "Películas Populares":
                     </div>
                     <div style="text-align: right;">
                         <p style="color: #e74c3c; font-weight: bold; margin: 0;">⭐ {row['avg_rating']:.1f}</p>
-                        <p style="color: #95a5a6; font-size: 0.9rem; margin: 0;">({row['rating_count']} votos)</p>
+                        <p style="color: #95a5a6; font-size: 0.9rem; margin: 0;">({row.get('rating_count', 0)} votos)</p>
                     </div>
                 </div>
             </div>
@@ -535,7 +535,7 @@ elif page_name == "Análisis de Datos":
         """, unsafe_allow_html=True)
     
     with col4:
-        rated_movies = len(movies_df[movies_df['rating_count'] > 0])
+        rated_movies = len(movies_df[movies_df.get('rating_count', 0) > 0])
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); 
                     padding: 15px; border-radius: 10px; text-align: center; color: white;">
@@ -550,7 +550,7 @@ elif page_name == "Análisis de Datos":
     
     with col1:
         # Distribución de calificaciones
-        ratings_with_votes = movies_df[movies_df['rating_count'] > 0]
+        ratings_with_votes = movies_df[movies_df.get('rating_count', 0) > 0]
         if not ratings_with_votes.empty:
             fig_ratings = px.histogram(
                 ratings_with_votes, 

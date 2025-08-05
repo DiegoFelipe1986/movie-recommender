@@ -158,12 +158,20 @@ def get_popular_movies(movies_df, min_ratings=10, limit=20):
         limit (int): Número máximo de resultados
         
     Returns:
-        pd.DataFrame: Películas populares
+        pd.DataFrame: DataFrame con las películas populares
     """
-    popular = movies_df[
-        (movies_df['rating_count'] >= min_ratings) & 
-        (movies_df['avg_rating'] > 0)
-    ].sort_values('avg_rating', ascending=False).head(limit)
+    # Verificar si rating_count existe
+    if 'rating_count' in movies_df.columns:
+        popular = movies_df[
+            (movies_df['rating_count'] >= min_ratings) & 
+            (movies_df['avg_rating'] > 0)
+        ].sort_values('avg_rating', ascending=False).head(limit)
+    else:
+        # Si no hay rating_count, usar solo avg_rating
+        popular = movies_df[
+            (movies_df['avg_rating'] > 0)
+        ].sort_values('avg_rating', ascending=False).head(limit)
+    
     return popular
 
 def get_movies_by_genre(movies_df, genre, limit=20):
@@ -217,14 +225,18 @@ def calculate_rating_stats(movies_df):
     Returns:
         dict: Diccionario con estadísticas
     """
+    # Verificar si las columnas existen
+    avg_rating_col = 'avg_rating' if 'avg_rating' in movies_df.columns else 'rating'
+    rating_count_col = 'rating_count' if 'rating_count' in movies_df.columns else 'count'
+    
     return {
-        'mean_rating': movies_df['avg_rating'].mean(),
-        'median_rating': movies_df['avg_rating'].median(),
-        'std_rating': movies_df['avg_rating'].std(),
-        'min_rating': movies_df['avg_rating'].min(),
-        'max_rating': movies_df['avg_rating'].max(),
+        'mean_rating': movies_df[avg_rating_col].mean() if avg_rating_col in movies_df.columns else 0,
+        'median_rating': movies_df[avg_rating_col].median() if avg_rating_col in movies_df.columns else 0,
+        'std_rating': movies_df[avg_rating_col].std() if avg_rating_col in movies_df.columns else 0,
+        'min_rating': movies_df[avg_rating_col].min() if avg_rating_col in movies_df.columns else 0,
+        'max_rating': movies_df[avg_rating_col].max() if avg_rating_col in movies_df.columns else 0,
         'total_movies': len(movies_df),
-        'total_ratings': movies_df['rating_count'].sum()
+        'total_ratings': movies_df[rating_count_col].sum() if rating_count_col in movies_df.columns else 0
     }
 
 def get_genre_distribution(movies_df):
